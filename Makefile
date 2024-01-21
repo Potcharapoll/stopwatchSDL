@@ -1,6 +1,6 @@
 CC := gcc
 LD := gcc
-CFLAGS := -O2 
+CFLAGS := -O2 -Wall -g
 LDFLAGS := -lSDL2 -lSDL2_ttf
 SRC := src
 OBJ := obj

@@ -1,12 +1,7 @@
 #ifndef STOPWATCH_H
 #define STOPWATCH_H
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <time.h>
-#include <signal.h>
-#include <unistd.h>
 #define PATH "time"
+#include <stdint.h>
 
 struct Time {
   uint16_t hour;

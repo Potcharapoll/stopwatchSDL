@@ -1,11 +1,12 @@
 #ifndef TEXT_H
 #define TEXT_H
-#include <SDL2/SDL_ttf.h>
+#define MAX_LEN   100
 #define FONT_SIZE 40
 #define FONT_PATH "res/fonts/JetBrainsMonoNerdFont-Regular.ttf"
+#include <SDL2/SDL_ttf.h>
 
 struct Text {
-  char txt[9];
+  char txt[MAX_LEN];
   SDL_Texture *texture;
   TTF_Font *font;
   SDL_Rect rect;

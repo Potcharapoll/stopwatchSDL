@@ -3,53 +3,48 @@
 
 struct Window window;
 
-static void update(void) {
+static void updateWindow(void) {
   updateText();
 }
 
-static void render(void) {
-  SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, 255);
+static void renderWindow(void) {
+  SDL_SetRenderDrawColor(window.renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
   SDL_RenderClear(window.renderer);
   renderText();
   SDL_RenderPresent(window.renderer);
 }
 
 static void windowHandle(void) {
-  SDL_Event e;
   while (!window.quit) {
-    while (SDL_PollEvent(&e)) {
-      switch(e.type) {
-        case SDL_QUIT:
-          window.quit = true;
-          break;
-        default:
-          break;
-      }
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT)
+        window.quit = true;
     }
-    update();
-    render();
+    updateWindow();
+    renderWindow();
   }
 }
 
 void initSDLWindow(void) {
-  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     fprintf(stderr, "Error Initializing SDL: %s\n", SDL_GetError());
     exit(EXIT_FAILURE);
   }
-  window.win = SDL_CreateWindow(
+  window.window = SDL_CreateWindow(
       "Stopwatch",
       SCREENWIDTH-WIDTH,
       0,
       WIDTH,
       HEIGHT,
       SDL_WINDOW_BORDERLESS | SDL_WINDOW_POPUP_MENU);
-  if (!window.win) {
-    fprintf(stderr, "Error Creating SDL_Window: %s\n", SDL_GetError());
+  if (!window.window) {
+    fprintf(stderr, "Could not create a window: %s\n", SDL_GetError());
     exit(EXIT_FAILURE);
   }
-  window.renderer = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  window.renderer = SDL_CreateRenderer(window.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if (!window.renderer) {
-    fprintf(stderr, "Error Creating SDL_Renderer: %s\n", SDL_GetError());
+    fprintf(stderr, "Could not create a renderer: %s\n", SDL_GetError());
     exit(EXIT_FAILURE);
   }
   window.quit = false;
@@ -59,6 +54,6 @@ void initSDLWindow(void) {
 
 void destroyWindow(void) {
   SDL_DestroyRenderer(window.renderer);
-  SDL_DestroyWindow(window.win);
+  SDL_DestroyWindow(window.window);
   SDL_Quit();
 }

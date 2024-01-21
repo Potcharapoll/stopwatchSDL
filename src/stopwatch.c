@@ -1,4 +1,8 @@
 #include "stopwatch.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
 
 static FILE *file;
 struct Time Time;
@@ -25,8 +29,7 @@ void initTime(void) {
 
 void loadTime(void) {
   if ((file = fopen(PATH, "r")) == NULL) {
-    printf( "Can't open file '%s'\nProgram will start from 00:00:00\n", PATH);
-    return;
+    printf("Cannot open file '%s'\nProgram will start from 00:00:00\n", PATH);
   }
   fscanf(file, "%hu:%hu:%hu",&Time.hour, &Time.minute, &Time.second);
   printf("File loaded successfully!\n");
@@ -35,7 +38,7 @@ void loadTime(void) {
 
 void saveTime(void) {
   if ((file = fopen(PATH, "w")) == NULL) {
-    fprintf(stderr, "Can't open file '%s'\n", PATH);
+    fprintf(stderr, "Cannot open file '%s'\n", PATH);
     exit(EXIT_FAILURE);
   }
   fprintf(file, "%02hu:%02hu:%02hu", Time.hour, Time.minute, Time.second);
@@ -45,6 +48,6 @@ void saveTime(void) {
 }
 
 void cleanupStopwatch(void) {
-  printf("Cleaning Up!\n");
+  printf("Cleaning up stopwatch!\n");
   saveTime();
 }
